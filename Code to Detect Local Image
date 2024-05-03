@@ -1,0 +1,23 @@
+import roboflow
+###code to label an inputted image locally
+### the API key for our trained model
+rf = roboflow.Roboflow(api_key="GE5hI6Y9Set5IYtYPU13") 
+
+###project id 
+project = rf.workspace().project("bottle-detection-odmn3")
+## project version
+
+model = project.version("1").model
+
+# optionally, change the confidence and overlap thresholds in percentages
+model.confidence = 50
+model.overlap = 25
+
+# predict on a local image
+prediction_image = model.predict("/Users/johnkelly/Desktop/bottles/Glass15.jpg")
+
+# Plot the prediction in an interactive environment
+prediction_image.plot()
+
+# Convert predictions to JSON
+prediction_image.json()
