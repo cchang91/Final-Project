@@ -1,0 +1,41 @@
+#import relevant libraries:
+# TensorFlow and tf.keras
+import tensorflow as tf
+import os
+from sklearn.model_selection import train_test_split #splits dataset into testing and training
+
+# Helper libraries
+import numpy as np
+import matplotlib.pyplot as plt
+
+#import data from Google Drive (credit: https://stackoverflow.com/questions/65907971/downloading-data-from-google-drive-colab)
+import pathlib
+from google.colab import drive
+drive.mount('/content/gdrive')
+
+# Assert whether the directory was mounted correctly
+data_dir = "/content/gdrive/MyDrive/ObjectDetection/Images_Combined"
+if os.path.exists(data_dir):
+    print("Directory mounted correctly")
+else:
+    print("Error: Directory not mounted correctly")
+
+#make category names
+category_names = ['Plastic bottles', 'Metal sorted', 'Glass sorted', 'cardboard']
+
+#split images into training and testing datasets
+import os
+from sklearn.model_selection import train_test_split #splits dataset into testing and training (https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html)
+image_files = os.listdir(data_dir)
+train_files, test_files = train_test_split(image_files, test_size= 0.2, random_state= 50)
+
+#pre-processing images for standardization and noise reduction on the model:
+from tensorflow.keras.preprocessing.image import load_img
+file_path = "/content/gdrive/MyDrive/ObjectDetection/Images_Combined/cardboard1.jpg"  # Replace with your actual file path for an image
+
+# Test if the image is being loaded or not
+try:
+    img = load_img(file_path, target_size=(224, 224))  # Assuming you want to resize images to 224x224
+    print("Image loaded successfully")
+except Exception as e:
+    print("Error loading image:")
