@@ -21,12 +21,19 @@ category_names = ['Plastic bottles', 'Metal sorted', 'Glass sorted', 'cardboard'
 import os
 from sklearn.model_selection import train_test_split #splits dataset into testing and training (https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html)
 image_files = os.listdir(data_dir)
+
+#filter out only .jpg files
+jpg_image_files = []
+for file_name in image_files:
+    if file_name.endswith('.jpg'):
+        jpg_image_files.append(file_name)
+
 train_files, test_files = train_test_split(image_files, test_size= 0.2, random_state= 50)
 
 #pre-processing images for standardization and noise reduction on the model:
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 def preprocess_image(file_path):
-    img = load_img(file_path, target_size=(224, 224))  # Assuming you want to resize images to 224x224
+    img = load_img(file_path, target_size=(128, 128))
     img_array = img_to_array(img) / 255.0  # Convert image to numpy array and normalize
     return img_array
 
