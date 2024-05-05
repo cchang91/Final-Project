@@ -1,5 +1,5 @@
 import roboflow
-###code to label an inputted image locally
+###code to label an inputted
 ### the API key for our trained model
 rf = roboflow.Roboflow(api_key="GE5hI6Y9Set5IYtYPU13") 
 
@@ -10,14 +10,51 @@ project = rf.workspace().project("bottle-detection-odmn3")
 model = project.version("1").model
 
 # optionally, change the confidence and overlap thresholds in percentages
-model.confidence = 50
-model.overlap = 25
+model.confidence = 10
+model.overlap = 10
 
-# predict on a local image
-prediction_image = model.predict("/Users/johnkelly/Desktop/bottles/Glass15.jpg")
+# predict on a local image with its classname
+prediction_image = model.predict("/Users/johnkelly/Desktop/bottles/AluCan24.jpg", labels = True)
 
-# Plot the prediction in an interactive environment
-prediction_image.plot()
 
 # Convert predictions to JSON
-prediction_image.json()
+print(prediction_image.json())
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+
+# Plot the prediction
+def plot_with_labels(prediction):
+    # Load the image
+    image_path = prediction.json()['predictions'][0]['image_path']
+    image = plt.imread(image_path)
+
+    # Create figure and axis
+    fig, ax = plt.subplots(1)
+    ax.imshow(image)
+
+    # Get prediction data
+    predictions = prediction.json()['predictions']
+
+    # Plot each prediction
+    for pred in predictions:
+        # Extract bounding box coordinates and class
+        x, y, width, height = pred['x'], pred['y'], pred['width'], pred['height']
+        label = pred['class']
+
+        # Calculate corner points
+        x1, y1 = x - (width / 2), y - (height / 2) #top left
+        x2, y2 = x + (width / 2), y + (height / 2) #bottom right
+
+        # Create a rectangle patch
+        rect = patches.Rectangle((x1, y1), width, height, linewidth=1, edgecolor='r', facecolor='none')
+        ax.add_patch(rect)
+
+        # Add label to the plot (top-left corner)
+        ax.text(x1, y1, label, color='red', fontsize=12, ha='left', va='top', bbox=dict(facecolor='white', alpha=0.5))
+
+    # Show plot
+    plt.axis('off')
+    plt.show()
+
+# Use the function to plot with labels
+plot_with_labels(prediction_image)
