@@ -1,0 +1,53 @@
+#import relevant libraries:
+# TensorFlow and tf.keras
+import tensorflow as tf
+import os
+from sklearn.model_selection import train_test_split #splits dataset into testing and training
+
+# Helper libraries
+import numpy as np
+import matplotlib.pyplot as plt
+
+#import data from Google Drive (credit: https://stackoverflow.com/questions/65907971/downloading-data-from-google-drive-colab)
+import pathlib
+from google.colab import drive
+drive.mount('/content/gdrive')
+data_dir = "/content/gdrive/My Drive/ObjectDetection/Images_Combined"
+
+#make category names
+category_names = ['Plastic bottles', 'Metal sorted', 'Glass sorted', 'cardboard']
+
+#split images into training and testing datasets
+import os
+from sklearn.model_selection import train_test_split #splits dataset into testing and training (https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html)
+image_files = os.listdir(data_dir)
+
+# Filter out only the image files with .jpg extension using a for loop
+jpg_image_files = []
+for file_name in image_files:
+    if file_name.endswith('.jpg'):
+        jpg_image_files.append(file_name)
+
+# Split the filtered image files into training and testing sets
+train_files, test_files = train_test_split(jpg_image_files, test_size= 0.2, random_state= 50)
+
+#pre-processing images for standardization and noise reduction on the model:
+from tensorflow.keras.preprocessing.image import load_img, img_to_array
+
+def preprocess_image(file_path):
+    img = load_img(file_path, target_size=(128, 128))
+    img_array = img_to_array(img) / 255.0  # Convert image to numpy array and normalize
+    return img_array
+
+# Preprocess training images
+train_data = [preprocess_image(os.path.join(data_dir, file_name)) for file_name in train_files]
+
+# Preprocess testing images
+test_data = [preprocess_image(os.path.join(data_dir, file_name)) for file_name in test_files]
+
+#Model Time!!!
+model = tf.keras.Sequential([
+    tf.keras.layers.Flatten(input_shape=(128,128,3)),
+    tf.keras.layers.Dense(128, activation='relu'),
+    tf.keras.layers.Dense(4, activation='softmax')
+])
