@@ -46,8 +46,17 @@ train_data = [preprocess_image(os.path.join(data_dir, file_name)) for file_name 
 test_data = [preprocess_image(os.path.join(data_dir, file_name)) for file_name in test_files]
 
 #Model Time!!!
+#Model Time!!!
 model = tf.keras.Sequential([
-    tf.keras.layers.Flatten(input_shape=(128,128,3)),
-    tf.keras.layers.Dense(128, activation='relu'),
+    tf.keras.layers.Conv2D(32, (3, 3), activation = 'relu', input_shape=(128, 128, 3)),
+    tf.keras.layers.MaxPooling2D((2, 2)),
+    tf.keras.layers.Conv2D(64, (3,3), activation= 'relu'),
+    tf.keras.layers.MaxPooling2D((2, 2)),
+    tf.keras.layers.Dense(64, activation='relu'),
     tf.keras.layers.Dense(4, activation='softmax')
 ])
+
+#Compile the model
+model.compile(optimizer= 'adam',
+              loss= tf.keras.losses.SparseCategoricalCrossentropy,
+              metrics=['accuracy'])
