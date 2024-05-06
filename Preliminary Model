@@ -16,7 +16,7 @@ data_dir = "/content/gdrive/My Drive/ObjectDetection/Images_Combined"
 
 #make category names
 category_names = ['Plastic bottles', 'Metal sorted', 'Glass sorted', 'cardboard']
-
+train_labels = np.array(category_names)
 #split images into training and testing datasets
 import os
 from sklearn.model_selection import train_test_split #splits dataset into testing and training (https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html)
@@ -39,24 +39,58 @@ def preprocess_image(file_path):
     img_array = img_to_array(img) / 255.0  # Convert image to numpy array and normalize
     return img_array
 
-# Preprocess training images
-train_data = [preprocess_image(os.path.join(data_dir, file_name)) for file_name in train_files]
+# Preprocess training images and create corresponding labels
+train_data = []
+train_labels = []
 
-# Preprocess testing images
-test_data = [preprocess_image(os.path.join(data_dir, file_name)) for file_name in test_files]
+for file_name in train_files:
+    img_array = preprocess_image(os.path.join(data_dir, file_name))
+    train_data.append(img_array)
+    category_index = train_files.index(file_name)
+    label = category_names[category_index % len(category_names)]  # Ensure circular index
+    train_labels.append(label)
+
+# Preprocess testing images and create corresponding labels
+test_data = []
+test_labels = []
+
+for file_name in test_files:
+    img_array = preprocess_image(os.path.join(data_dir, file_name))
+    test_data.append(img_array)
+    category_index = test_files.index(file_name)
+    label = category_names[category_index % len(category_names)]  # Ensure circular index
+    test_labels.append(label)
+
+# Convert lists to numpy arrays
+train_data = np.array(train_data)
+train_labels = np.array(train_labels)
+
+test_data = np.array(test_data)
+test_labels = np.array(test_labels)
 
 #Model Time!!!
-#Model Time!!!
+# Model definition
 model = tf.keras.Sequential([
-    tf.keras.layers.Conv2D(32, (3, 3), activation = 'relu', input_shape=(128, 128, 3)),
+    tf.keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(128, 128, 3)),
     tf.keras.layers.MaxPooling2D((2, 2)),
-    tf.keras.layers.Conv2D(64, (3,3), activation= 'relu'),
-    tf.keras.layers.MaxPooling2D((2, 2)),
-    tf.keras.layers.Dense(64, activation='relu'),
-    tf.keras.layers.Dense(4, activation='softmax')
+    tf.keras.layers.Dense(32, activation='relu'),
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(4, activation='softmax')  # Output layer with 4 units
 ])
 
-#Compile the model
-model.compile(optimizer= 'adam',
-              loss= tf.keras.losses.SparseCategoricalCrossentropy,
+# Compile the model
+model.compile(optimizer='adam',
+              loss='sparse_categorical_crossentropy',  # Use sparse categorical crossentropy
               metrics=['accuracy'])
+# Feed the model with training data
+model.fit(train_data, train_labels_encoded, epochs=10)
+
+from sklearn.preprocessing import LabelEncoder
+
+# Encode the test labels
+label_encoder = LabelEncoder()
+test_labels_encoded = label_encoder.fit_transform(test_labels)
+
+# Evaluate the model on the test data
+test_loss, test_acc = model.evaluate(test_data, test_labels_encoded)
+print('Test accuracy:', test_acc)
