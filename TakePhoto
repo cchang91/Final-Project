@@ -3,7 +3,7 @@ import roboflow
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 
-# Initialize Roboflow
+# Initialize Roboflow, these next three lines of code were found on roboflow's website
 rf = roboflow.Roboflow(api_key="GE5hI6Y9Set5IYtYPU13") 
 project = rf.workspace().project("comphoto")
 model = project.version("5").model
