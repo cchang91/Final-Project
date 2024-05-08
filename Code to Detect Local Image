@@ -15,7 +15,7 @@ model.overlap = 10
 
 # predict on a local image with its classname
 prediction_image = model.predict("/Users/johnkelly/Desktop/bottles/AluCan24.jpg", labels = True)
-
+### the above lines were inspired by Roboflow's website on deploying the inference
 
 # Convert predictions to JSON
 print(prediction_image.json())
