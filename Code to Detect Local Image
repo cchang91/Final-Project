@@ -4,10 +4,10 @@ import roboflow
 rf = roboflow.Roboflow(api_key="GE5hI6Y9Set5IYtYPU13") 
 
 ###project id 
-project = rf.workspace().project("bottle-detection-odmn3")
+project = rf.workspace().project("comphoto")
 ## project version
 
-model = project.version("1").model
+model = project.version("5").model
 
 # optionally, change the confidence and overlap thresholds in percentages
 model.confidence = 10
