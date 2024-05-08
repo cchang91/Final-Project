@@ -1,0 +1,95 @@
+import cv2
+import roboflow
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+
+# Initialize Roboflow
+rf = roboflow.Roboflow(api_key="GE5hI6Y9Set5IYtYPU13") 
+project = rf.workspace().project("comphoto")
+model = project.version("5").model
+
+# Optionally, change the confidence and overlap thresholds in percentages
+model.confidence = 10
+model.overlap = 10
+
+# Function to capture image from webcam and process
+def capture_and_process():
+    # Initialize webcam
+    cap = cv2.VideoCapture(0)
+
+    # Check if the webcam is opened correctly
+    if not cap.isOpened():
+        print("Error: Could not open webcam")
+        return
+
+    while True:
+        # Capture frame from webcam
+        ret, frame = cap.read()
+
+        # Display the captured frame
+        cv2.imshow('Press S to capture', frame)
+
+        # Check for key press
+        key = cv2.waitKey(1)
+        
+        # If 's' is pressed, capture and process the image
+        if key == ord('s'):
+            # Save captured frame to a temporary file
+            temp_image_path = "temp_image.jpg"
+            cv2.imwrite(temp_image_path, frame)
+            
+            # Predict on the captured image
+            prediction_image = model.predict(temp_image_path, labels=True)
+
+            # Convert predictions to JSON
+            prediction_json = prediction_image.json()
+
+            # Plot the prediction with labels
+            plot_with_labels(prediction_json)
+            
+            break  # Break the loop after capturing and processing one image
+
+        # If 'q' is pressed, quit
+        elif key == ord('q'):
+            break
+
+    # Release the webcam and close windows
+    cap.release()
+    cv2.destroyAllWindows()
+
+# Plot the prediction with labels
+def plot_with_labels(prediction):
+    # Load the image
+    image_path = prediction['predictions'][0]['image_path']
+    image = plt.imread(image_path)
+
+    # Create figure and axis
+    fig, ax = plt.subplots(1)
+    ax.imshow(image)
+
+    # Get prediction data
+    predictions = prediction['predictions']
+
+    # Plot each prediction
+    for pred in predictions:
+        # Extract bounding box coordinates and class
+        x, y, width, height = pred['x'], pred['y'], pred['width'], pred['height']
+        label = pred['class']
+
+        # Calculate corner points
+        x1, y1 = x - (width / 2), y - (height / 2) #top left
+        x2, y2 = x + (width / 2), y + (height / 2) #bottom right
+
+        # Create a rectangle patch
+        rect = patches.Rectangle((x1, y1), width, height, linewidth=1, edgecolor='r', facecolor='none')
+        ax.add_patch(rect)
+
+        # Add label to the plot (top-left corner)
+        ax.text(x1, y1, label, color='red', fontsize=12, ha='left', va='top', bbox=dict(facecolor='white', alpha=0.5))
+
+    # Show plot
+    plt.axis('off')
+    plt.show()
+
+# Call the function to capture and process from webcam
+capture_and_process()
