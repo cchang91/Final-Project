@@ -6,23 +6,28 @@ rf = roboflow.Roboflow(api_key="GE5hI6Y9Set5IYtYPU13")
 ###project id 
 project = rf.workspace().project("comphoto")
 ## project version
-
 model = project.version("5").model
 
-# optionally, change the confidence and overlap thresholds in percentages
-model.confidence = 10
+##The above code was inspired by roboflow's inference deployment code found on the blog screenshot posted on github:
+
+# the confidence and overlap thresholds in percentages
+model.confidence = 20
 model.overlap = 10
 
-# predict on a local image with its classname
-prediction_image = model.predict("/Users/johnkelly/Desktop/bottles/AluCan24.jpg", labels = True)
-### the above lines were inspired by Roboflow's website on deploying the inference
+# predict on a local image, input the fullpathname
+prediction_image = model.predict("/Users/johnkelly/Desktop/newphotos/Photo on 5-7-24 at 2.24 PM #7.jpg", labels = True)
+
 
 # Convert predictions to JSON
 print(prediction_image.json())
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 
-# Plot the prediction
+"""" the function plot_with_labels takes in a prediction which has classname, x coordinate and y coordinate. If the inputted 
+photo has any predictions that are above the confidence threshold, it will create a red box around the specific object using
+the x and y corodinates from predictions, and will also display the object's class name in the top left corner. If there are no predictions
+above the confidence threshold, it will output and empty list
+"""
 def plot_with_labels(prediction):
     # Load the image
     image_path = prediction.json()['predictions'][0]['image_path']
@@ -42,19 +47,20 @@ def plot_with_labels(prediction):
         label = pred['class']
 
         # Calculate corner points
-        x1, y1 = x - (width / 2), y - (height / 2) #top left
-        x2, y2 = x + (width / 2), y + (height / 2) #bottom right
+        x1, y1 = x - (width / 2), y - (height / 2) #top left corner of the box
+        x2, y2 = x + (width / 2), y + (height / 2) #bottom right corner of the box
 
-        # Create a rectangle patch
+        # Create a rectangle patch from coordinates
         rect = patches.Rectangle((x1, y1), width, height, linewidth=1, edgecolor='r', facecolor='none')
-        ax.add_patch(rect)
+        ax.add_patch(rect) 
 
-        # Add label to the plot (top-left corner)
+        # Add label to the plot (top-left corner) overlays
         ax.text(x1, y1, label, color='red', fontsize=12, ha='left', va='top', bbox=dict(facecolor='white', alpha=0.5))
 
     # Show plot
     plt.axis('off')
     plt.show()
 
-# Use the function to plot with labels
+# calling the function to plot with labels and ouput the image with the labebls
 plot_with_labels(prediction_image)
+
