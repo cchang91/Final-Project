@@ -1,6 +1,6 @@
 # Final-Project
 
-#Goal: 
+# Goal: 
 To create our own dataset and train an object detection model to detect 4 classes
 
 1. plastic bottles
@@ -8,23 +8,23 @@ To create our own dataset and train an object detection model to detect 4 classe
 3. Cans
 4. Crushed Cans
 
-#Where did we get these photos: 
+# Where did we get these photos: 
 They were shot on Photobooth on our computer. We found it was best to have our dataset's photo 
 quality mimic to where the code would be ran.
 
-#What did did we  use to train the model?:
+# What did did we  use to train the model?:
 We utilized the website, Roboflow, which makes training models understandable for almost all coding backgrounds
 
-#Pretrained models we used to fine tune to our own dataset
+# Pretrained models we used to fine tune to our own dataset
 1. Yolov5 (for our initial 2  models)
 2. Yolov9 (ended up being much more accurate)
 
-#How did we fine tune the model?:
+# How did we fine tune the model?:
 We used two the google collab files "training_collab(Yolov5)" and "training_collab(Yolov9)"  These Google Collab were helpful in streamlining
 the process and providing a GPU to utilize. 
 
 
-#We ended up creating 3 python files to do the following:
+# We ended up creating 3 python files to do the following:
 
 1. Code to Detect Local Image: 
 Takes in a pathfile image and creates predictions based on the photo. If there are any predictions it will output the photo with  box and classify the object. (We did this by overlaying a square and toxbox on the original photo.
