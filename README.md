@@ -9,8 +9,7 @@ To create our own dataset and train an object detection model to detect 4 classe
 4. Crushed Cans
 
 # Where did we get these photos? 
-They were shot on Photobooth on our computer. We found it was best to have our dataset's photo 
-quality mimic to where the code would be ran.
+We got photos from two sources, the first was two online data sets that had a huge number of photos of trash from various angles. However these had to be manually sorted through to find images that were suitable for training the model. After just using these images proved less accurate than we had hoped, we also decided to take a few hundered photos on photobooth to increase the size of the dataset to increase the accuracy. 
 
 # What did did we  use to train the model?
 We utilized the website, Roboflow, which makes training models understandable for almost all coding backgrounds
