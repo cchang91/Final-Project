@@ -1,0 +1,23 @@
+#how to capture image from webcam 
+
+import cv2
+
+if __name__ == "__main__":
+
+   VideoCap= cv2.VideoCapture(0) #index for webcam for a laptop 1 webcam
+
+   while True: ### stream video instead of 1 frame
+    success, frame, = VideoCap.read()
+    if success:
+        cv2.imshow("Webcam", frame) 
+    
+    if cv2.waitKey(1) & 0xFF == ord('q'): #from webcam: quits if we press q for quit
+        break
+
+   VideoCap.release()
+   cv2.destroyAllWindows() #clean up the files
+
+from matplotlib import pyplot as plt
+
+import cvlib as cv #for object detection
+from cvlib.object_detection import draw_bbox
