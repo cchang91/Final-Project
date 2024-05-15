@@ -41,7 +41,7 @@ the process and providing a GPU to utilize.
 **Links:**
 
 Data: https://drive.google.com/drive/folders/1ulHrOgEalxMRBXpuu1fimtriz-1ZN5r2?usp=sharing
-file 'sorted' has all the images we ended up using for the analysis
+file 'Images_combined' has all the images we ended up using for the analysis
 
 Presentation: https://docs.google.com/presentation/d/1s9b17nYuEolI7k6D9eyt9NhuAL6pbmRW18QQQKoatBk/edit?usp=sharing
    
