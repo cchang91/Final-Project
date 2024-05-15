@@ -38,6 +38,12 @@ the process and providing a GPU to utilize.
    Take Photo, but runs continously. Unofortunately, it was not successful due to the immense lag when the code ran. (The hardware running
    the object detection model may not be powerful enough to process the video frames in real-time.)
 
+**Links:**
+
+Data: https://drive.google.com/drive/folders/1ulHrOgEalxMRBXpuu1fimtriz-1ZN5r2?usp=sharing
+file 'sorted' has all the images we ended up using for the analysis
+
+Presentation: https://docs.google.com/presentation/d/1s9b17nYuEolI7k6D9eyt9NhuAL6pbmRW18QQQKoatBk/edit?usp=sharing
    
 
    
