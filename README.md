@@ -1,7 +1,7 @@
 # Final-Project
 
 # Goal: 
-To create our own dataset and train an object detection model to detect 4 classes
+To train an object detection model to detect 4 classes using both our own dataset and found data
 
 1. plastic bottles
 2. glass bottles
@@ -26,15 +26,16 @@ the process and providing a GPU to utilize.
 # We ended up creating 3 python files to do the following:
 
 1. Code to Detect Local Image: 
-Takes in a pathfile image and creates predictions based on the photo. If there are any predictions it will output the photo with  box and classify the object. (We did this by overlaying a square and toxbox on the original photo.
+   Takes in a pathfile image and creates predictions based on the photo. If there are any predictions it will output the photo with a box and classify the object.
+   We did this by overlaying a square and toxbox on the original photo.
 
-2. TakePhoto:
-   Opens youre webcam. If you press s, it will take a screenshot and process the photo similar to how Code to Detect Local Image does.
-   If youre webcam is forzen, we added a break feature where pressing q will stop the code from running.
+3. TakePhoto:
+   Opens your webcam. If you press s, it will take a screenshot and process the photo similar to how Code to Detect Local Image does.
+   If youre webcam is frozen, we added a break feature where pressing q will stop the code from running.
 
-3. Webcam:
-   Opens youre webcam. The idea was to run our object detection model on a livestream from the device's webcam. It runs similarly to
-   Take Photo, but runs continously. Unofrtunately, it was not successful due to the immense lag when the code ran. (The hardware running
+4. Webcam:
+   Opens your webcam. The idea was to run our object detection model on a livestream from the device's webcam. It runs similarly to
+   Take Photo, but runs continously. Unofortunately, it was not successful due to the immense lag when the code ran. (The hardware running
    the object detection model may not be powerful enough to process the video frames in real-time.)
 
    
